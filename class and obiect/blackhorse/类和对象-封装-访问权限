@@ -1,27 +1,39 @@
 #include<iostream>
 using namespace std;
 
-class C1
-{
-	int m_A;//默认权限 是私有
-};
+//访问权限 三种
+//公共权限 public       成员 类内可以访问 类外可以访问
+//保护权限 protected	成员 类内可以访问 类外不可以访问 儿子可以访问父亲中的保护内容
+//私有权限 private		成员 类内可以访问 类外不可以访问 儿子不可以访问父亲中的私有内容
 
-struct C2
+class Person
 {
-	int m_A;//默认权限 是公共
+public:
+	string m_Name;
+protected:
+	string m_Car;
+private:
+	int m_Password;
+
+public:
+	void func()
+	{
+		m_Name = "张三";
+		m_Car = "拖拉机";
+		m_Password = 123456;
+	}
 };
 
 int main()
 {
-	//struct 和 class 区别
-	//struct 默认权限是 公共 public
-	//class  默认权限是 私有 private
+	//实例化具体对象
+	Person p1;
 
-	C1 c1;
-	//c1.m_A = 10;//报错 class默认权限私有 类外访问没权限
+	p1.m_Name = "李四";
+	//p1.m_Car = "奔驰";  //保护权限内容
+	//p1.m_Password = 231564; //私有权限内容
 
-	C2 c2;
-	c2.m_A = 10;
+	p1.func();
 
 	system("pause");
 	return 0;
