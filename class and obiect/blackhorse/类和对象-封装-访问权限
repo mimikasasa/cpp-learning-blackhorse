@@ -1,41 +1,27 @@
 #include<iostream>
 using namespace std;
 
-class Student {
+class C1
+{
+	int m_A;//默认权限 是私有
+};
 
-public://公共权限
-
-	//类中的属性和行为 统一称为成员
-	//属性  成员属性 成员变量
-	//行为  成员函数 成员方法
-
-	//属性
-	string m_name;
-	int m_id;
-
-	//行为
-	void setName(string name)
-	{
-		m_name = name;
-	}
-	void setId(int id)
-	{
-		m_id = id;
-	}
-
-	void showStudent()
-	{
-		cout << "学生姓名为：" << m_name << "    学生学号为：" << m_id << endl;
-	}
-
+struct C2
+{
+	int m_A;//默认权限 是公共
 };
 
 int main()
 {
-	Student stu1;
-	stu1.setName("盖克");
-	stu1.setId(24);
-	stu1.showStudent();
+	//struct 和 class 区别
+	//struct 默认权限是 公共 public
+	//class  默认权限是 私有 private
+
+	C1 c1;
+	//c1.m_A = 10;//报错 class默认权限私有 类外访问没权限
+
+	C2 c2;
+	c2.m_A = 10;
 
 	system("pause");
 	return 0;
