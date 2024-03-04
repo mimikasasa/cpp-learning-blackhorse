@@ -7,7 +7,7 @@ class Person
 public:
 
 	//this指针的本质 是指针常量  指针的指向是不可以修改的的
-	//用传统指针理解为  Person * const this;    复习：常量指针和指针常量  *const 指针常量 指针的指向不可以改   const* 常量指针  指针指向的值不可改
+	//用传统指针理解为  Person * const this;    
 	//在成员函数后面加const 修饰的是this指向 让指针指向的值也不可以修改
 	void showPerson()const
 	{
