@@ -1,0 +1,50 @@
+#include<iostream>
+using namespace std;
+
+//左移运算符重载
+
+class Person
+{
+	friend ostream& operator<<(ostream& cout, Person& p);
+
+public:
+	Person(int a, int b)
+	{
+		m_A = a;
+		m_B = b;
+	}
+
+private:
+
+	//利用成员函数重载 左移运算符  p.operator<<(cout)  简化版本p<<cout  
+	//通常不会使用成员函数重载<<运算符  因为无法实现<<在左侧
+	//void operator<<(Person &p)这样就涉及两个对象了 但目前只有一个对象  
+	//改成void operator<<(cout) 无法实现<<在左侧
+
+	int m_A;
+	int m_B;
+};
+
+//只能利用全局函数重载左移运算符
+ostream& operator<<(ostream &cout, Person &p) //本质 operator<<(cout,p) 简化cout<<p
+{
+	cout << "m_A=" << p.m_A << " m_B=" << p.m_B;
+	return cout;
+}
+
+void test1()
+{
+	Person p(10,10);
+	/*p.m_A = 10;
+	p.m_B = 10;*/
+
+	cout << p<<"helloworld"<<endl; //链式编程 如果29行返回值是void将无法endl; p得是与cout返回值类型一样的才能一直左移运算符下去
+}
+
+int main()
+{
+	test1();
+	
+	system("pause");
+	return 0;
+}
