@@ -1,1 +1,47 @@
+#include<iostream>
+using namespace std;
 
+class Complex
+{
+public:
+	Complex(double = 0.0, double = 0.0);
+
+	void addComplex(Complex& z1)
+	{
+		this->real = this->real + z1.real;
+		this->imag = this->imag + z1.imag;
+	}
+
+	void subtractComplex(Complex& z1)
+	{
+		this->real = this->real - z1.real;
+		this->imag = this->imag - z1.imag;
+	}
+
+	void print()
+	{
+		cout << "(" << this->real << "," << this->imag << ")" << endl;
+	}
+
+private:
+	double real;
+	double imag;
+};
+
+int main()
+{
+	Complex z1(2.5, 4.0);
+	Complex z2(1.6, 2.6);
+	//z1.addComplex(z2);
+	z1.subtractComplex(z2);
+	z1.print();
+
+	system("pause");
+	return 0;
+}
+
+Complex::Complex(double a, double b)
+{
+	real = a;
+	imag = b;
+}
