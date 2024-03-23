@@ -1,1 +1,105 @@
+#include<iostream>
+using namespace std;
 
+//计算最大公约数
+int gcd(int a, int b)
+{
+	if (b == 0)
+	{
+		return a;
+	}
+	return gcd(b,a%b);
+}
+
+void reduceFraction(int& a, int& b)
+{
+	int commonDivisor = gcd(a, b);
+	a = a / commonDivisor;
+	b = b / commonDivisor;
+}
+
+class Rational
+{
+public:
+	Rational(int = 0, int = 1);
+
+	Rational addRational(const Rational &r)const
+	{
+		int newDenominator = this->denominator * r.denominator;
+		int newNumerator1 = this->numerator * r.denominator;
+		int newNumerator2 = r.numerator * this->denominator;
+
+		int resultNumerator = newNumerator1 + newNumerator2;
+		Rational result(resultNumerator, newDenominator);
+
+		return result;
+	}
+
+	Rational subtractRational(const Rational& r)const
+	{
+		int newDenominator = this->denominator * r.denominator;
+		int newNumerator1 = this->numerator * r.denominator;
+		int newNumerator2 = r.numerator * this->denominator;
+
+		int resultNumerator = newNumerator1 - newNumerator2;
+		Rational result(resultNumerator, newDenominator);
+
+		return result;
+	}
+
+	Rational multiplyRational(const Rational& r)const
+	{
+		int newDenominator = this->denominator * r.denominator;
+		int newNumerator = this->numerator * r.numerator;
+
+		Rational result(newNumerator, newDenominator);
+		return result;
+	}
+
+	Rational divideRational(const Rational& r)const
+	{
+		int newDenominator = this->denominator * r.numerator;
+		int newNumerator = this->numerator * r.denominator;
+
+		Rational result(newNumerator, newDenominator);
+		return result;
+	}
+
+	void print()
+	{
+		cout << numerator << "/" << denominator << endl;
+	}
+
+private:
+	int numerator;
+	int denominator;
+};
+
+
+Rational::Rational(int a, int b)
+{
+	reduceFraction(a, b);
+	numerator = a;
+	denominator = b;
+}//在构造函数中加入化简函数，使得初始化的时候就可以得到化简后的分式
+
+int main()
+{
+	Rational r1(3, 4);
+	Rational r2(4, 5);
+
+	Rational result1=r1.addRational(r2);
+	result1.print();
+
+	Rational result2 = r1.subtractRational(r2);
+	result2.print();
+
+	Rational result3 = r1.multiplyRational(r2);
+	result3.print();
+
+	Rational result4 = r1.divideRational(r2);
+	result4.print();
+
+	system("pause");
+	return 0;
+}
