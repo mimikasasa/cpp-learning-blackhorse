@@ -1,1 +1,63 @@
+#include<iostream>
+using namespace std;
 
+class Rectangle
+{
+public:
+
+	Rectangle(float = 1.0, float = 1.0);
+
+	void setLength(float a)
+	{
+		if (0.0 < a < 20.0)
+		{
+			length = a;
+		}
+		else
+		{
+			cout << " 设置出错，请输入0.0~20.0的浮点数" << endl;
+			return;
+		}
+	}
+	float getLength()
+	{
+		return length;
+	}
+	void setWidth(float b)
+	{
+		if (0.0 < b < 20.0)
+		{
+			width = b;
+		}
+		else
+		{
+			cout << " 设置出错，请输入0.0~20.0的浮点数" << endl;
+			return;
+		}
+	}
+	float getWidth()
+	{
+		return width;
+	}
+
+private:
+	float length;
+	float width;
+};
+
+Rectangle::Rectangle(float a, float b)
+{
+	length = a;
+	width = b;
+}
+
+int main()
+{
+	Rectangle r1;
+	r1.setLength(5.0);
+	r1.setWidth(10.0);
+
+
+	system("pause");
+	return 0;
+}
