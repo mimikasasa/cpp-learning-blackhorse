@@ -40,6 +40,16 @@ public:
 		return width;
 	}
 
+	float calPerimeter()
+	{
+		return 2 * (length + width);
+	}
+
+	float calArea()
+	{
+		return length * width;
+	}
+
 private:
 	float length;
 	float width;
@@ -56,7 +66,7 @@ int main()
 	Rectangle r1;
 	r1.setLength(5.0);
 	r1.setWidth(10.0);
-
+	cout << "r1的周长为:" << r1.calPerimeter() << "    " << "r1的面积为:" << r1.calArea() << endl;
 
 	system("pause");
 	return 0;
