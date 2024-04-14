@@ -1,73 +1,73 @@
 #include<iostream>
+#include<stdexcept>	
 using namespace std;
 
 class Rectangle
 {
 public:
-
 	Rectangle(float = 1.0, float = 1.0);
 
-	void setLength(float a)
+	void setLength(float l)
 	{
-		if (0.0 < a < 20.0)
+		if (l > 0.0 && l < 20.0)
 		{
-			length = a;
+			m_Length = l;
 		}
 		else
-		{
-			cout << " 设置出错，请输入0.0~20.0的浮点数" << endl;
-			return;
-		}
+			cout << "l must be 0-20.0";
 	}
+
+	void setWidth(float w)
+	{
+		if (w > 0.0 && w < 20.0)
+		{
+			m_Width = w;
+		}
+		else cout << "w must be 0-20.0";
+	}
+
 	float getLength()
 	{
-		return length;
-	}
-	void setWidth(float b)
-	{
-		if (0.0 < b < 20.0)
-		{
-			width = b;
-		}
-		else
-		{
-			cout << " 设置出错，请输入0.0~20.0的浮点数" << endl;
-			return;
-		}
+		return m_Length;
 	}
 	float getWidth()
 	{
-		return width;
+		return m_Width;
 	}
 
-	float calPerimeter()
+	float calculatePerimeter()
 	{
-		return 2 * (length + width);
+		return 2 * (getWidth() + getLength());
 	}
 
-	float calArea()
+	float calculateArea()
 	{
-		return length * width;
+		return getLength() * getWidth();
 	}
 
 private:
-	float length;
-	float width;
+	float m_Length;
+	float m_Width;
 };
-
-Rectangle::Rectangle(float a, float b)
-{
-	length = a;
-	width = b;
-}
 
 int main()
 {
-	Rectangle r1;
-	r1.setLength(5.0);
-	r1.setWidth(10.0);
-	cout << "r1的周长为:" << r1.calPerimeter() << "    " << "r1的面积为:" << r1.calArea() << endl;
+	Rectangle rtg;
+	cout << "the perimeter of rectangle is:" << rtg.calculatePerimeter() 
+		 << "  the area of rectangle is:" << rtg.calculateArea();
+
+	Rectangle rtg1;
+	rtg1.setLength(4);
+	rtg1.setWidth(4);
+	cout << "the perimeter of rectangle is:" << rtg1.calculatePerimeter()
+		<< "  the area of rectangle is:" << rtg1.calculateArea();
 
 	system("pause");
 	return 0;
+}
+
+Rectangle::Rectangle(float l, float w)
+{
+	m_Length = l;
+	m_Width = w;
 }
