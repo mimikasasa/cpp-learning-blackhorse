@@ -1,1 +1,149 @@
+#include <iostream>
+#include <array>
 
+using namespace std;
+
+class HugeInteger {
+private:
+    array<int, 40> digits; // 用于存储整数的数组
+
+public:
+    // 构造函数，将所有元素初始化为0
+    HugeInteger() {
+        digits.fill(0);
+    }
+
+    // 输入函数
+    void input() {
+        string numString;
+        cout << "Enter a huge integer (up to 40 digits): ";
+        cin >> numString;
+
+        // 将输入的数字字符串转换为整数数组
+        for (size_t i = 0; i < numString.length(); ++i) {
+            digits[i] = numString[numString.length() - 1 - i] - '0'; // 从低位到高位存储
+        }
+    }
+
+    // 输出函数
+    void output() const {
+        bool leadingZeros = true;
+        for (int i = 39; i >= 0; --i) {
+            if (leadingZeros && digits[i] == 0) {
+                continue; // 忽略前导零
+            }
+            else {
+                leadingZeros = false;
+            }
+            cout << digits[i];
+        }
+        if (leadingZeros) {
+            cout << '0'; // 如果数字全为0，输出0
+        }
+        cout << endl;
+    }
+
+    // 加法函数
+    HugeInteger add(const HugeInteger& other) const {
+        HugeInteger result;
+        int carry = 0;
+        for (size_t i = 0; i < digits.size(); ++i) {
+            int sum = digits[i] + other.digits[i] + carry;
+            result.digits[i] = sum % 10; // 取个位数作为结果
+            carry = sum / 10; // 计算进位
+        }
+        return result;
+    }
+
+    // 减法函数
+    HugeInteger subtract(const HugeInteger& other) const {
+        HugeInteger result;
+        int borrow = 0;
+        for (size_t i = 0; i < digits.size(); ++i) {
+            int diff = digits[i] - other.digits[i] - borrow;
+            if (diff < 0) {
+                diff += 10;
+                borrow = 1;
+            }
+            else {
+                borrow = 0;
+            }
+            result.digits[i] = diff;
+        }
+        return result;
+    }
+
+    // 谓词函数，比较是否相等
+    bool isEqualTo(const HugeInteger& other) const {
+        return digits == other.digits;
+    }
+
+    // 谓词函数，比较是否不相等
+    bool isNotEqualTo(const HugeInteger& other) const {
+        return !isEqualTo(other);
+    }
+
+    // 谓词函数，比较是否大于
+    bool isGreaterThan(const HugeInteger& other) const {
+        for (int i = 39; i >= 0; --i) {
+            if (digits[i] > other.digits[i]) {
+                return true;
+            }
+            else if (digits[i] < other.digits[i]) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    // 谓词函数，比较是否小于
+    bool isLessThan(const HugeInteger& other) const {
+        return !isGreaterThan(other) && !isEqualTo(other);
+    }
+
+    // 谓词函数，比较是否大于等于
+    bool isGreaterThanOrEqualTo(const HugeInteger& other) const {
+        return isGreaterThan(other) || isEqualTo(other);
+    }
+
+    // 谓词函数，比较是否小于等于
+    bool isLessThanOrEqualTo(const HugeInteger& other) const {
+        return isLessThan(other) || isEqualTo(other);
+    }
+
+    // 谓词函数，检查是否为零
+    bool isZero() const {
+        for (int digit : digits) {
+            if (digit != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+int main() {
+    HugeInteger num1, num2;
+
+    cout << "Enter the first huge integer:\n";
+    num1.input();
+
+    cout << "Enter the second huge integer:\n";
+    num2.input();
+
+    cout << "The sum is: ";
+    (num1.add(num2)).output();
+
+    cout << "The difference is: ";
+    (num1.subtract(num2)).output();
+
+    cout << "Is num1 equal to num2? " << (num1.isEqualTo(num2) ? "Yes" : "No") << endl;
+    cout << "Is num1 not equal to num2? " << (num1.isNotEqualTo(num2) ? "Yes" : "No") << endl;
+    cout << "Is num1 greater than num2? " << (num1.isGreaterThan(num2) ? "Yes" : "No") << endl;
+    cout << "Is num1 less than num2? " << (num1.isLessThan(num2) ? "Yes" : "No") << endl;
+    cout << "Is num1 greater than or equal to num2? " << (num1.isGreaterThanOrEqualTo(num2) ? "Yes" : "No") << endl;
+    cout << "Is num1 less than or equal to num2? " << (num1.isLessThanOrEqualTo(num2) ? "Yes" : "No") << endl;
+    cout << "Is num1 zero? " << (num1.isZero() ? "Yes" : "No") << endl;
+
+    return 0;
+}
