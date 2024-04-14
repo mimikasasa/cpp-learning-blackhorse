@@ -1,1 +1,160 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
 
+class Point {
+public:
+    Point() : m_X(0), m_Y(0) {}
+
+    Point(float x, float y) {
+        m_X = x;
+        m_Y = y;
+    }
+
+    void setX(float x) {
+        m_X = x;
+    }
+
+    void setY(float y) {
+        m_Y = y;
+    }
+
+    float getX() const {
+        return m_X;
+    }
+
+    float getY() const {
+        return m_Y;
+    }
+
+private:
+    float m_X;
+    float m_Y;
+};
+
+// 计算两点间的距离
+float distance(Point pa, Point pb) {
+    return sqrt(pow(pa.getX() - pb.getX(), 2) + pow(pa.getY() - pb.getY(), 2));
+}
+
+class Rectangle {
+public:
+    Rectangle(Point& p1, Point& p2, Point& p3, Point& p4) {
+        // 确保四个点按顺序组成矩形的四个顶点
+        m_p1 = p1;
+        m_p2 = p2;
+        m_p3 = p3;
+        m_p4 = p4;
+
+        // 判断对角线长度是否相等
+        float d1 = distance(p1, p2);
+        float d2 = distance(p1, p3);
+        float d3 = distance(p1, p4);
+        float d4 = distance(p2, p3);
+        float d5 = distance(p2, p4);
+        float d6 = distance(p3, p4);
+
+        bool diagonalEqual = (fabs(d1 - d6) < 0.00001 && fabs(d2 - d5) < 0.00001) ||
+            (fabs(d1 - d5) < 0.00001 && fabs(d2 - d6) < 0.00001) ||
+            (fabs(d1 - d4) < 0.00001 && fabs(d3 - d6) < 0.00001);
+
+        // 判断相对角线是否垂直
+        bool perpendicular = fabs(d1 * d1 + d2 * d2 - d4 * d4) < 0.00001 ||
+            fabs(d1 * d1 + d3 * d3 - d5 * d5) < 0.00001 ||
+            fabs(d2 * d2 + d3 * d3 - d6 * d6) < 0.00001;
+
+        if (!diagonalEqual || !perpendicular) {
+            cout << "四个点没有组成长方形，请重新输入符合要求的四个点" << endl;
+        }
+    }
+
+    float calculatePerimeter() const {
+        return 2 * (distance(m_p1, m_p2) + distance(m_p1, m_p3));
+    }
+
+    float calculateArea() const {
+        return distance(m_p1, m_p2) * distance(m_p1, m_p3);
+    }
+
+    void square() const {
+        if (distance(m_p1, m_p2) == distance(m_p1, m_p3)) {
+            cout << "it's a square";
+        }
+        else {
+            cout << "it's not a square";
+        }
+    }
+
+    // 设置用于绘制矩形主体的字符
+    void setFillCharacter(char fillChar) {
+        m_fillChar = fillChar;
+    }
+
+    // 设置用于绘制矩形边框的字符
+    void setPerimeterCharacter(char perimeterChar) {
+        m_perimeterChar = perimeterChar;
+    }
+
+    // 在25x25的框内绘制矩形
+    void draw() const {
+        // 初始化25x25的图案
+        char picture[25][25];
+        for (int i = 0; i < 25; ++i) {
+            for (int j = 0; j < 25; ++j) {
+                if (i == 0 || i == 24 || j == 0 || j == 24) {
+                    picture[i][j] = '#'; // 绘制边框
+                }
+                else {
+                    picture[i][j] = ' '; // 其余位置留空
+                }
+            }
+        }
+
+        // 计算矩形在图案上的位置和大小
+        int minX = min(m_p1.getX(), min(m_p2.getX(), min(m_p3.getX(), m_p4.getX())));
+        int minY = min(m_p1.getY(), min(m_p2.getY(), min(m_p3.getY(), m_p4.getY())));
+        int maxX = max(m_p1.getX(), max(m_p2.getX(), max(m_p3.getX(), m_p4.getX())));
+        int maxY = max(m_p1.getY(), max(m_p2.getY(), max(m_p3.getY(), m_p4.getY())));
+        int width = maxX - minX + 1;
+        int height = maxY - minY + 1;
+
+        // 画出矩形
+        for (int i = minY; i <= maxY; ++i) {
+            for (int j = minX; j <= maxX; ++j) {
+                if (i - minY >= 0 && i - minY < height && j - minX >= 0 && j - minX < width) {
+                    picture[i][j] = m_fillChar;
+                }
+            }
+        }
+
+        // 输出矩形和边框
+        for (int i = 0; i < 25; ++i) {
+            for (int j = 0; j < 25; ++j) {
+                cout << picture[i][j];
+            }
+            cout << endl;
+        }
+    }
+
+private:
+    Point m_p1;
+    Point m_p2;
+    Point m_p3;
+    Point m_p4;
+    char m_fillChar = '*'; // 默认填充字符为'*'
+    char m_perimeterChar = '#'; // 默认边框字符为'#'
+};
+
+int main() {
+    Point p1(2, 3);
+    Point p2(2, 8);
+    Point p3(10, 3);
+    Point p4(10, 8);
+
+    Rectangle rtg(p1, p2, p3, p4);
+    rtg.setFillCharacter('*'); // 设置填充字符
+    rtg.setPerimeterCharacter('#'); // 设置边框字符
+    rtg.draw();
+
+    return 0;
+}
