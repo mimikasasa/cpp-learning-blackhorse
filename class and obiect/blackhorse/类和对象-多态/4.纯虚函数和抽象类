@@ -30,6 +30,7 @@ void test1()
 
 	Base* base = new Son;
 	base->func();
+	delete base;
 }
 
 int main()
