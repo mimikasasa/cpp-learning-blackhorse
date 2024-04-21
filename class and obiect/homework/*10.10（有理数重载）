@@ -1,0 +1,132 @@
+#include <iostream>
+using namespace std;
+
+class RationalNumber {
+
+public:
+    // 构造函数
+    RationalNumber(int num, int denom) 
+    {
+        if (denom == 0) {
+            cerr << "Error: Denominator can not be 0." << endl;
+            exit(1);
+        }
+        numerator = num;
+        denominator = denom;
+        simplify();
+    }
+
+    // 加法运算符重载
+    RationalNumber operator+(const RationalNumber& other) const 
+    {
+        int num = numerator * other.denominator + other.numerator * denominator;
+        int denom = denominator * other.denominator;
+        return RationalNumber(num, denom);
+    }
+
+    // 减法运算符重载
+    RationalNumber operator-(const RationalNumber& other) const 
+    {
+        int num = numerator * other.denominator - other.numerator * denominator;
+        int denom = denominator * other.denominator;
+        return RationalNumber(num, denom);
+    }
+
+    // 乘法运算符重载
+    RationalNumber operator*(const RationalNumber& other) const 
+    {
+        int num = numerator * other.numerator;
+        int denom = denominator * other.denominator;
+        return RationalNumber(num, denom);
+    }
+
+    // 除法运算符重载
+    RationalNumber operator/(const RationalNumber& other) const 
+    {
+        if (other.numerator == 0) {
+            cerr << "Error: Division by 0." << endl;
+            exit(1);
+        }
+        int num = numerator * other.denominator;
+        int denom = denominator * other.numerator;
+        return RationalNumber(num, denom);
+    }
+
+    // 相等运算符重载
+    bool operator==(const RationalNumber& other) const
+    {
+        return (numerator == other.numerator) && (denominator == other.denominator);
+    }
+
+    // 不等运算符重载
+    bool operator!=(const RationalNumber& other) const 
+    {
+        return !(*this == other);
+    }
+
+    // 小于运算符重载
+    bool operator<(const RationalNumber& other) const 
+    {
+        return (numerator * other.denominator) < (other.numerator * denominator);
+    }
+
+    // 大于运算符重载
+    bool operator>(const RationalNumber& other) const 
+    {
+        return (numerator * other.denominator) > (other.numerator * denominator);
+    }
+
+    // 输出函数
+    friend ostream& operator<<(ostream& os, const RationalNumber& rn) 
+    {
+        os << rn.numerator << "/" << rn.denominator;
+        return os;
+    }
+
+private:
+    int numerator;
+    int denominator;
+
+    // 求最大公约数
+    int gcd(int a, int b) 
+    {
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+
+    // 将分数化简为最简形式
+    void simplify() 
+    {
+        int divisor = gcd(abs(numerator), abs(denominator));
+        numerator /= divisor;
+        denominator /= divisor;
+
+        // 确保负号在分子上
+        if (denominator < 0) {
+            numerator *= -1;
+            denominator *= -1;
+        }
+    }
+};
+
+int main()
+{
+    RationalNumber r1(3, 4);
+    RationalNumber r2(4, 5);
+
+    cout <<"r1+r2="<< r1 + r2 << endl;
+    cout << "r1*r2=" << r1 * r2 << endl;
+    cout << "r1/r2=" << r1 / r2 << endl;
+
+    cout << "r1==r2 is " << (r1 == r2) << endl;
+    cout << "r1!=r2 is " << !(r1 == r2) << endl;
+
+    cout << "r1>r2 is  " << (r1 > r2) << endl;
+
+    system("pause");
+    return 0;
+}
