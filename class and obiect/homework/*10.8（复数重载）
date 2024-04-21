@@ -1,0 +1,90 @@
+#include <iostream>
+using namespace std;
+
+class Complex
+{
+public:
+    explicit Complex(double realPart = 0.0, double imaginaryPart = 0.0) : real(realPart), imaginary(imaginaryPart) {}
+
+    // Addition operator
+    Complex operator+(const Complex& operand2) const
+    {
+        return Complex(real + operand2.real, imaginary + operand2.imaginary);
+    }
+
+    // Subtraction operator
+    Complex operator-(const Complex& operand2) const
+    {
+        return Complex(real - operand2.real, imaginary - operand2.imaginary);
+    }
+
+    // Multiplication operator
+    Complex operator*(const Complex& operand2) const
+    {
+        //(a + bi) * (c + di) = (ac - bd) + (ad + bc)i
+        double realPart = (real * operand2.real) - (imaginary * operand2.imaginary);
+        double imaginaryPart = (real * operand2.imaginary) + (imaginary * operand2.real);
+        return Complex(realPart, imaginaryPart);
+    }
+
+    // Overloading the insertion operator (<<) to allow output of Complex objects
+    friend ostream& operator<<(ostream& os, const Complex& complex)
+    {
+        os << "(" << complex.real << "," << complex.imaginary << ")";
+        return os;
+    }
+
+    // Overloading the extraction operator (>>) to allow input of Complex objects
+    friend istream& operator>>(istream& is, Complex& complex)
+    {
+        cout << "Enter real part: ";
+        is >> complex.real;
+        cout << "Enter imaginary part: ";
+        is >> complex.imaginary;
+        return is;
+    }
+
+    // Equality operator
+    bool operator==(const Complex& other) const
+    {
+        return (real == other.real) && (imaginary == other.imaginary);
+    }
+
+    // Inequality operator
+    bool operator!=(const Complex& other) const
+    {
+        return !(*this == other);
+    }
+
+private:
+    double real;
+    double imaginary;
+};
+
+int main()
+{
+    Complex c1(3, 4);
+    Complex c2(5, -2);
+
+    cout << "c1: " << c1 << endl;
+    cout << "c2: " << c2 << endl;
+
+    Complex c3;
+    cout << "Enter a complex number (format: a + bi): ";
+    cin >> c3;
+    cout << "You entered: " << c3 << endl;
+
+    // Testing addition operator
+    Complex sum = c1 + c2;
+    cout << "Sum of c1 and c2: " << sum << endl;
+
+    // Testing multiplication operator
+    Complex product = c1 * c2;
+    cout << "Product of c1 and c2: " << product << endl;
+
+    // Testing equality operator
+    cout << "c1 == c2: " << (c1 == c2) << endl;
+    cout << "c1 != c2: " << (c1 != c2) << endl;
+
+    return 0;
+}
