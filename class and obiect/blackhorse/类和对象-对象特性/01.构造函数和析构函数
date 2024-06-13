@@ -24,7 +24,7 @@ public:
 void test01()
 {
 	Person p;//在栈上的数据 test01执行完毕后 释放这个对象
-	//如果在主函数里面Person p则没有cout析构函数那一行
+	//如果在主函数里面Person p则没有cout析构函数那一行（有的 把system("pause");过了就有析构了 因为得等主函数执行完毕才会调用主函数里的类对象p的析构函数
 }
 
 int main()
